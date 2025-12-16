@@ -16,16 +16,27 @@ def main():
     try:
         with open(entrada, 'r') as f:
             lines = [l.strip() for l in f.readlines() if l.strip()]
+
+            n = len(lines)
+
+            if n % 2 != 0:
+                print(f"Error: n={n} es impar. No puede haber el mismo número de X y O por fila/columna.")
+                return
+
+            for i, line in enumerate(lines):
+                if len(line) != n:
+                    raise ValueError(f"Instancia no es NxN: fila {i} tiene longitud {len(line)} y n={n}.")
 	#error de lectura
     except FileNotFoundError:
         print("Error: No se encuentra el archivo de entrada.")
         return
 
-    n = len(lines)
+    
     
     print("Instancia original:")
     for linea in lines:
         print(linea)
+    
     
 
     #redactamos las restricciones 
@@ -33,13 +44,22 @@ def main():
     
     for r in range(n):
         for c in range(n):
-            char = lines[r][c]
+
+            #normalizado los carácteres por si hay errores
+
+   
+            char = lines[r][c].upper()
             if char == '.':
                 p.addVariable((r, c), [0, 1])
-            elif char == 'o':
+            elif char == 'O':
                 p.addVariable((r, c), [0])
-            elif char == 'x':
+            elif char == 'X':
                 p.addVariable((r, c), [1])
+
+            else:
+                print("Error: Caracter invalodo")
+                return
+                #esto se puede hacer así?
 
     #Equilibrio (suma = n/2)
     target_sum = n // 2
@@ -59,7 +79,7 @@ def main():
             p.addConstraint(no_triple, [(r, c), (r+1, c), (r+2, c)])
 
     #Busqueda de soluciones
-    print(f"Resolviendo tablero de (n)x(n)")
+    
     solutions = p.getSolutions() 
 
     # Mostrar soluciones
@@ -85,10 +105,10 @@ def main():
                 linea_str = ""
                 for c in range(n):
                     val = solucion_final[(r, c)]
-                    linea_str += "o" if val == 0 else "x"
+                    linea_str += "O" if val == 0 else "X"
                 f.write(linea_str + "\n")
                 
-        print(f"Archivo guardado corréctamente en: {salida}")
+        
         
     else:
         print("No se encontro ninguna solución.")
