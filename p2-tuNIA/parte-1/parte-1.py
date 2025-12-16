@@ -1,6 +1,14 @@
 import sys
 from constraint import *
 
+
+
+def encuadrado(filas):
+    n = len(filas)
+    top = "+" + "-" * n + "+"
+    body = "\n".join("|" + fila + "|" for fila in filas)
+    return f"{top}\n{body}\n{top}"
+
 def main():
     #Verificamos los argumentos
     if len(sys.argv) != 3:
@@ -33,9 +41,7 @@ def main():
 
     
     
-    print("Instancia original:")
-    for linea in lines:
-        print(linea)
+    print(encuadrado(lines)) #instancia original
     
     
 
@@ -86,29 +92,30 @@ def main():
     num_soluciones = len(solutions)
     print(f"{num_soluciones} soluciones encontradas")
 
+
+
+
+
     if num_soluciones > 0:
         # Guardamos solo la primera solucion
         solucion_final = solutions[0]
-        
-        
-        with open(salida, 'w') as f:
+            
+            
+        solucion_rows = []
+        for r in range(n):
+            fila = ""
+            for c in range(n):
+                val = solucion_final[(r, c)]
+                fila += "O" if val == 0 else "X"
+            solucion_rows.append(fila)
 
-            
-            f.write("Instancia original:\n") # Primero escribimos el tablero original
-            for linea in lines:
-                f.write(linea + "\n")
-            
-            f.write("\nSolucion:\n")
-            
-            
-            for r in range(n):
-                linea_str = ""
-                for c in range(n):
-                    val = solucion_final[(r, c)]
-                    linea_str += "O" if val == 0 else "X"
-                f.write(linea_str + "\n")
-                
+            # imprimir SOLO una solución al final
+        print(encuadrado(solucion_rows))
         
+        
+        with open(salida, 'w', encoding='utf-8') as f:
+            f.write(encuadrado(lines) + "\n")
+            f.write(encuadrado(solucion_rows) + "\n")
         
     else:
         print("No se encontro ninguna solución.")
