@@ -2,8 +2,10 @@ import math
 
 class Grafo:
     def __init__(self, fichero_grafo, fichero_coordenadas):
-        self.adyacencias = {} # Diccionario: { nodo_origen: {nodo_destino: coste, ...} }
-        self.coordenadas = {} # Diccionario: { nodo_id: (longitud, latitud) }
+
+
+        self.adyacencias = {} # Diccionario: ( nodo_origen: {nodo_destino: coste, etc) )
+        self.coordenadas = {} # Diccionario: ( nodo_id: (longitud, latitud) )
         
         # Leemos los dos ficheros al arrancar
         self._leer_grafo(fichero_grafo)
@@ -13,8 +15,8 @@ class Grafo:
         print(f"Cargando mapa (arcos) {fichero}")
         try:
             with open(fichero, 'r') as f:
-                for linea in f:
-                    # El formato es: a <origen> <destino> <coste>
+                for linea in f: # El formato es a (origen) (destino) (coste)
+                    
                     partes = linea.split()
                     if len(partes) >= 4 and partes[0] == 'a':
                         u = int(partes[1])
@@ -27,14 +29,14 @@ class Grafo:
                         self.adyacencias[u][v] = coste
                         
         except FileNotFoundError:
-            print(f"Error: No encuentro el fichero {fichero}")
+            print(f"Error -> No encuentro el fichero {fichero}")
 
     def _leer_coordenadas(self, fichero):
-        print(f"Cargando mapa (coordenadas)... {fichero}")
+        print(f"Cargando mapa (coordenadas) {fichero}")
         try:
             with open(fichero, 'r') as f:
-                for linea in f:
-                    # El formato es: v <id> <lon> <lat>
+                for linea in f: # El formato es v (id) (lon) (lat)
+                    
                     partes = linea.split()
                     if len(partes) >= 4 and partes[0] == 'v':
                         nodo_id = int(partes[1])
@@ -45,17 +47,18 @@ class Grafo:
                         self.coordenadas[nodo_id] = (lon, lat)
                         
         except FileNotFoundError:
-            print(f"Error: No encuentro el fichero {fichero}")
+            print(f"Error -> No encuentro el fichero {fichero}")
             
-    # Métodos útiles para el GPS (Parte 2)
-    def get_vecinos(self, nodo):
-        """Devuelve los nodos a los que se puede ir desde 'nodo'"""
+    
+    #Metodos que usamos para el gps
+    def get_vecinos(self, nodo): #Devuelvo todos los nodos a los que puedo ir desde Nodo
+        
         return self.adyacencias.get(nodo, {}).keys()
 
-    def get_coste(self, u, v):
-        """Devuelve la distancia entre u y v"""
+    def get_coste(self, u, v): #Deulvo la distancia entre u y v
+        
         return self.adyacencias.get(u, {}).get(v, float('inf'))
 
-    def get_posicion(self, nodo):
-        """Devuelve (lon, lat) de un nodo"""
+    def get_posicion(self, nodo): #Devuelco el lon y el lat (coordenadas) de un nodo
+        
         return self.coordenadas.get(nodo, (0, 0))

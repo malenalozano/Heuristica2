@@ -7,7 +7,7 @@ def main():
     # comprobacion de arguemntos
     if len(sys.argv) != 5:
         print("Error")
-        print("Ejecutar: python parte-2.py <grafo.gr> <coords.co> <origen> <destino>")
+        print("Por favor ejectue el comando de esta manera: python parte-2.py grafo.gr coords.co origen destino")
         return
 
     print(f"Calculando ruta de {origen} a {destino}")

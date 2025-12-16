@@ -2,8 +2,8 @@ import heapq
 
 class Abierta:
     def __init__(self):
-        # Usamos una cola de prioridad (heap) para sacar siempre el mejor nodo rápido
-        self.cola = [] 
+        
+        self.cola = [] # Usamos una cola para sacar el mejor nodo 
         
     def put(self, nodo, f, g, padre):
         """
@@ -13,7 +13,7 @@ class Abierta:
         g: distancia real ya recorrida
         padre: de qué ciudad venimos (para luego reconstruir el camino)
         """
-        # Guardamos una tupla. Python ordena automáticamente por el primer número (f)
+        # Guardamos una tupla
         heapq.heappush(self.cola, (f, nodo, g, padre))
 
     def pop(self):
