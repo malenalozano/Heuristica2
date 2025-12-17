@@ -106,14 +106,6 @@ def main():
 
 
 
-
-
-
-
-
-
-
-
 def nombre_a_rutas(mapa: str):
 
     mapa_path = Path(mapa)
